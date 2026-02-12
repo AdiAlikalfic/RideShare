@@ -1,0 +1,19 @@
+.btn {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #368ade, #7842db);
+  border: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #368ade, #7842db);
+}
+
+.btn:hover:not(:disabled) {
+  transform: scale(1.03);
+}
