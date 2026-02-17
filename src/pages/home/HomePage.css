@@ -3,17 +3,25 @@
   justify-content: center;
 }
 
+.home-container {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+}
+
 .nav {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-  max-width: fit-content;
+  width: 1200px;
   padding: 15px;
   margin: 20px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 20px;
-  gap: 900px;
 }
 
-.left-side {
+.left-side-nav {
   display: flex;
   gap: 10px;
 }
@@ -28,4 +36,201 @@ p {
   background-color: white;
   display: flex;
   gap: 5px;
+}
+
+.home-content {
+  margin: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.left-side-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wallet-block {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  width: 380px;
+  height: 180px;
+  justify-content: space-between;
+}
+
+.top-side {
+  display: flex;
+  height: fit-content;
+}
+
+.wallet-icon {
+  padding: 10px;
+  height: fit-content;
+  background-color: rgb(204, 255, 215);
+  border-radius: 10px;
+}
+
+.wallet-balance {
+  margin: 0 0 0 10px;
+}
+
+.wallet-balance p {
+  font-size: smaller;
+  font-weight: 400;
+}
+
+.wallet-balance h2 {
+  margin: 0;
+}
+
+.add-funds-btn {
+  margin-top: 10px;
+}
+
+.add-funds-btn button {
+  width: 100%;
+  background-color: rgb(6, 143, 6);
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.ride-cost-block {
+  background: linear-gradient(135deg, #368ade, #7842db);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  margin-top: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  width: 380px;
+  height: 180px;
+  gap: 10px;
+  /* justify-content: space-between; */
+}
+
+.dollar-icon {
+  background-color: #8970f8;
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 10px;
+}
+
+.est-ride-cost {
+  margin-left: 10px;
+}
+
+.est-ride-cost p {
+  color: white;
+  font-size: smaller;
+  font-weight: 400;
+}
+
+.est-ride-cost h2 {
+  color: white;
+  margin: 0;
+}
+
+hr {
+  height: 1px;
+  background-color: #ffffff;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.price-note p {
+  color: white;
+}
+
+.price-note .price-warning {
+  font-size: 12px;
+  font-weight: 200;
+  margin-top: 5px;
+}
+
+.trip-details-block {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin-top: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  width: 380px;
+  height: fit-content;
+  gap: 10px;
+}
+
+.trip-details-block h3 {
+  margin: 0;
+}
+
+.locations {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 20px;
+}
+
+.location-icon {
+  background-color: rgb(217, 215, 215);
+  width: 35px;
+  height: 35px;
+  padding: 5px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pickup-location,
+.destination {
+  display: flex;
+  gap: 10px;
+}
+
+.pickup-location p,
+.destination p {
+  font-size: smaller;
+  font-weight: 400;
+  color: grey;
+}
+
+.pickup-street-address,
+.destination-street-address {
+  font-weight: 600;
+  color: black;
+  margin: 0;
+}
+
+.ride-request-btn button {
+  background: linear-gradient(135deg, #368ade, #7842db);
+  color: white;
+  font-weight: 800;
+  width: 100%;
+  padding: 15px;
+}
+
+.right-side-content {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-radius: 20px;
+}
+
+.right-side-content h3 {
+  margin: 20px;
+}
+
+.map-container {
+  width: 100%;
+  height: 500px;
+  margin-top: 30px;
+  border-radius: 20px;
+  overflow: hidden;
 }
