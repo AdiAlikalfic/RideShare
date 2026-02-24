@@ -1,5 +1,5 @@
 import "./HomePage.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { LiaCarSideSolid, LiaHandHoldingHeartSolid } from "react-icons/lia";
@@ -10,6 +10,7 @@ import Map from "../../components/Map";
 
 
 function HomePage() {
+    const [walletBalance, setWalletBalance] = useState(0);
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -21,6 +22,29 @@ function HomePage() {
 
         navigate("/auth", { replace: true });
     }
+
+    useEffect(() => {
+        async function fetchWalletBalance() {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+
+            if(user) return;
+
+            const { data, error} = await supabase
+                .from("profiles")
+                .select("wallet_balance")
+                .eq("id", user.id)
+                .single();
+
+                if(error) {
+                    console.error(error);
+                } else {
+                    setWalletBalance(data.wallet_balance);
+                }
+        }
+        fetchWalletBalance();
+    }, []);
 
     return (
         <div className="home-page-wrapper">
@@ -53,7 +77,7 @@ function HomePage() {
                         </div>
                         <div className="wallet-balance">
                             <p>Wallet Balance</p>
-                            <h2>$200</h2>
+                            <h2>${walletBalance}</h2>
                         </div>
                         </div>
                         <div className="add-funds-btn">
