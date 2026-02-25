@@ -1,0 +1,183 @@
+.add-funds-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.add-funds-nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.add-funds-nav h3 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+.back {
+  margin: 10px;
+  background-color: white;
+  display: flex;
+  gap: 5px;
+}
+
+.back:hover {
+  background-color: rgb(239, 239, 239);
+}
+
+.current-balance-block {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  background-color: rgb(6, 143, 6);
+  width: 100%;
+  max-width: 800px;
+  padding: 15px;
+  margin: 20px;
+  border-radius: 20px;
+}
+
+.current-balance-block-top-side {
+  display: flex;
+  gap: 10px;
+  color: white;
+}
+
+.current-balance-block-top-side p {
+  font-weight: 400;
+  color: rgb(212, 212, 212);
+}
+
+.current-balance h1 {
+  color: white;
+}
+
+.details-wrapper {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 800px;
+  padding: 15px;
+}
+
+.amount-select p {
+  font-weight: 600;
+  padding: 10px;
+  margin-left: 20px;
+}
+
+.amount-btns {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.amount-btn {
+  padding: 10px 60px;
+}
+
+.amount-btn:hover {
+  background-color: rgb(197, 197, 197);
+}
+
+.amount-input {
+  margin: 15px 25px;
+}
+
+.add-funds-line {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.card-details-section {
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.card-icon {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-icon p {
+  font-weight: 600;
+  font-size: larger;
+}
+
+.card-number-field,
+.cardholder-name-field,
+.expiry-date-and-cvv,
+.card-number-field p,
+.cardholder-name-field p,
+.expiry-date-and-cvv p {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.expiry-date-and-cvv {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.expiry-date,
+.cvv-number {
+  width: 45%;
+}
+
+.secure-payment-note {
+  margin: 25px;
+  background-color: rgb(201, 245, 255);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.security-icon {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.security-icon p {
+  color: blue;
+  font-weight: 600;
+}
+
+.secure-payment-text p {
+  color: rgb(13, 101, 177);
+  font-size: smaller;
+  margin-left: 30px;
+}
+
+.add-to-wallet-btn {
+  margin: 25px;
+}
+
+.add-to-wallet-btn button {
+  width: 100%;
+  padding: 20px;
+  color: white;
+  font-size: larger;
+  font-weight: 700;
+  border-radius: 20px;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}

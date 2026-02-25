@@ -7,8 +7,6 @@ import { LuLogOut, LuDollarSign, LuWallet } from "react-icons/lu";
 import { CiLocationOn } from "react-icons/ci";
 import Map from "../../components/Map";
 
-
-
 function HomePage() {
     const [walletBalance, setWalletBalance] = useState(0);
     const navigate = useNavigate();
@@ -81,7 +79,7 @@ function HomePage() {
                         </div>
                         </div>
                         <div className="add-funds-btn">
-                            <button>Add Funds</button>
+                            <button onClick={() => navigate("/add-funds")}>Add Funds</button>
                         </div>
                     </div>
                     <div className="ride-cost-block">
