@@ -8,7 +8,6 @@ import { LuCreditCard } from "react-icons/lu";
 import { LuLock } from "react-icons/lu";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { set } from "mongoose";
 
 
 function AddFundsPage() {
@@ -20,6 +19,7 @@ function AddFundsPage() {
     const [cardholderName, setCardholderName] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
             async function fetchWalletBalance() {
@@ -27,18 +27,18 @@ function AddFundsPage() {
                     data: { user },
                 } = await supabase.auth.getUser();
     
-                if(user) return;
+                if(!user) return;
     
                 const { data, error} = await supabase
-                    .from("profiles")
-                    .select("wallet_balance")
-                    .eq("id", user.id)
+                    .from("wallets")
+                    .select("balance")
+                    .eq("user_id", user.id)
                     .single();
     
                     if(error) {
                         console.error(error);
                     } else {
-                        setWalletBalance(data.wallet_balance);
+                        setWalletBalance(data.balance);
                     }
             }
             fetchWalletBalance();
@@ -57,6 +57,66 @@ function AddFundsPage() {
 
             setError("");
             return true;
+        }
+
+        async function handleAddFunds() {
+            if(!validateCardDetails()) return;
+
+            try {
+                setLoading(true);
+
+                //Get logged in user
+                const {
+                    data: {user},
+                } = await supabase.auth.getUser();
+
+                if(!user) {
+                    setError("User not authenticated");
+                    setLoading(false);
+                    return;
+                }
+
+                //Payment processing delay 
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+
+                //Get current wallet balance
+                const { data: wallet, error: walletError} = await supabase
+                    .from("wallets")
+                    .select("balance")
+                    .eq("user_id", user.id)
+                    .single();
+
+                    if(walletError) {
+                        console.error(walletError);
+                        setError("Failed to retrieve wallet balance");
+                        setLoading(false);
+                        return;
+                    }
+
+                    const newBalance = Number(wallet.balance) + Number(amount);
+
+                    //Update wallet balance
+                    const {error: updateError} = await supabase
+                        .from("wallets")
+                        .update({balance: newBalance})
+                        .eq("user_id", user.id);
+
+                        if(updateError) {
+                            console.error(updateError);
+                            setError("Failed to update wallet balance");
+                            setLoading(false);
+                            return;
+                        }
+
+                        setWalletBalance(newBalance);
+
+                        navigate("/home");
+            } catch (err) {
+                console.error(err);
+                setError("An unexpected error occurred. Please try again.");
+            } finally {
+                setLoading(false);
+            }
         }
 
     return (
@@ -161,7 +221,13 @@ function AddFundsPage() {
                                 placeholder="123" 
                                 maxLength={3}
                                 value={cvv}
-                                onChange={(e) => setCvv(e.target.value)}
+                                inputMode="numeric"
+                                onChange={(e) => {
+                                    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
+                                    value = value.substring(0, 3); // limit to 3 digits
+                                    setCvv(value);
+                                    setError("");
+                                }}
                                 />
                             </div>
                         </div>
@@ -180,13 +246,10 @@ function AddFundsPage() {
                     {error && <p className="error-message">{error}</p>}
                 <Button
                 variant="primary"
-                onClick={() => {
-                    if (validateCardDetails()) {
-                        console.log("Form is valid - proceed with payment logic");
-                    }
-                }}
+                onClick={handleAddFunds}
+                disabled={loading}
                 >
-                Add ${amount || "0.00"} to wallet
+                {loading ? "Processing..." : `Add $${amount || "0.00"} to wallet`}
                 </Button>
                 </div>
             </div>

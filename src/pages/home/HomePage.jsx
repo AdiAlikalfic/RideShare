@@ -9,6 +9,7 @@ import Map from "../../components/Map";
 
 function HomePage() {
     const [walletBalance, setWalletBalance] = useState(0);
+    const [destination, setDestination] = useState(null);
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -27,18 +28,18 @@ function HomePage() {
                 data: { user },
             } = await supabase.auth.getUser();
 
-            if(user) return;
+            if(!user) return;
 
             const { data, error} = await supabase
-                .from("profiles")
-                .select("wallet_balance")
-                .eq("id", user.id)
+                .from("wallets")
+                .select("balance")
+                .eq("user_id", user.id)
                 .single();
 
                 if(error) {
                     console.error(error);
                 } else {
-                    setWalletBalance(data.wallet_balance);
+                    setWalletBalance(data.balance);
                 }
         }
         fetchWalletBalance();
@@ -118,9 +119,10 @@ function HomePage() {
                                 </div>
                                 <div className="destination-address">
                                     <p>Destination</p>
-                                    <h4 className="destination-street-address">
-                                        123 Main St, City, State
-                                    </h4>
+                                    {destination && 
+                                    (<h4 className="destination-street-address">
+                                        {destination.lat.toFixed(4)}, {destination.lng.toFixed(4)}
+                                    </h4>)}
                                 </div>
                             </div>
                         </div>
@@ -132,7 +134,7 @@ function HomePage() {
                 <div className="right-side-content">
                     <h3>Your Route</h3>
                     <div className="map-container">
-                        <Map />
+                        <Map onLocationSelect={(coords) => setDestination(coords)}/>
                     </div>
                 </div>
             </div>
