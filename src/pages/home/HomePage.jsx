@@ -10,6 +10,8 @@ import Map from "../../components/Map";
 function HomePage() {
     const [walletBalance, setWalletBalance] = useState(0);
     const [destination, setDestination] = useState(null);
+    const [pickup, setPickup] = useState(null);
+    const [distance, setDistance] = useState(null);
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -44,6 +46,30 @@ function HomePage() {
         }
         fetchWalletBalance();
     }, []);
+
+    function calculateDistance(coord1, coord2) {
+        const R = 6371; // Earth radius in km
+        const dLat = ((coord2.lat - coord1.lat) * Math.PI) / 180;
+        const dLng = ((coord2.lng - coord1.lng) * Math.PI) / 180;
+
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos((coord1.lat * Math.PI) / 180) *
+            Math.cos((coord2.lat * Math.PI) / 180) *
+            Math.sin(dLng / 2) *
+            Math.sin(dLng / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
+
+    useEffect(() => {
+        if (pickup && destination) {
+            const dist = calculateDistance(pickup, destination);
+            setDistance(dist);
+        }
+    }, [pickup, destination])
 
     return (
         <div className="home-page-wrapper">
@@ -108,9 +134,10 @@ function HomePage() {
                                 </div>
                                 <div className="pickup-location-address">
                                     <p>Pickup</p>
-                                    <h4 className="pickup-street-address">
-                                        123 Main St, City, State
-                                    </h4>
+                                    {pickup && 
+                                    (<h4 className="pickup-street-address">
+                                        {pickup.lat.toFixed(4)}, {pickup.lng.toFixed(4)}
+                                    </h4>)}
                                 </div>
                             </div>
                             <div className="destination">
@@ -134,7 +161,12 @@ function HomePage() {
                 <div className="right-side-content">
                     <h3>Your Route</h3>
                     <div className="map-container">
-                        <Map onLocationSelect={(coords) => setDestination(coords)}/>
+                        <Map 
+                        onLocationSelect={(coords) => setDestination(coords)}
+                        onPickupDetected={(coords) => setPickup(coords)}
+                        pickup={pickup}
+                        destination={destination}
+                        />
                     </div>
                 </div>
             </div>
