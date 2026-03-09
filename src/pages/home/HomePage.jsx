@@ -166,6 +166,7 @@ function HomePage() {
                         onPickupDetected={(coords) => setPickup(coords)}
                         pickup={pickup}
                         destination={destination}
+                        onDistanceCalculated={(d) => setDistance(d)}
                         />
                     </div>
                 </div>

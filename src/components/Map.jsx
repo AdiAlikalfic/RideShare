@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import { useEffect, useState, useRef } from "react";
-import L from "leaflet";
+import L, { routing } from "leaflet";
+import "./Map.css"
 import "leaflet-routing-machine"
 
 //custom markers
@@ -18,7 +19,7 @@ const destinationIcon = new L.Icon({
   iconAnchor: [12, 41],
 });
 
-function MapComponent({onLocationSelect, onPickupDetected, pickup, destination}) {
+function MapComponent({onLocationSelect, onPickupDetected, pickup, destination, onDistanceCalculated}) {
   const [position, setPosition] = useState(null);
 
   function LocationMarker({onLocationSelect}) {
@@ -26,8 +27,9 @@ function MapComponent({onLocationSelect, onPickupDetected, pickup, destination})
 
     useMapEvents({
       click(e) {
-        setMarkerPosition(e.latlng);
-        onLocationSelect(e.latlng);
+        onLocationSelect(e.latlng)
+        // setMarkerPosition(e.latlng);
+        // onLocationSelect(e.latlng);
       },
     });
 
@@ -40,7 +42,7 @@ function MapComponent({onLocationSelect, onPickupDetected, pickup, destination})
     // )
   }
 
-  function Routing({pickup, destination}) {
+  function Routing({pickup, destination, onDistanceCalculated}) {
     const map = useMap();
     const routingRef = useRef(null);
 
@@ -69,6 +71,18 @@ function MapComponent({onLocationSelect, onPickupDetected, pickup, destination})
         }
 
       }).addTo(map);
+
+      routingControl.on("routesfound", function (e) {
+        const route = e.routes[0]
+
+        const distance = route.summary.totalDistance;
+
+        onDistanceCalculated(distance);
+
+        const bounds = L.latLngBounds(route.coordinates);
+        map.fitBounds(bounds, {padding: [30, 30]});
+      });
+      routingRef.current = routingControl;
 
       return () => map.removeControl(routingControl);
 
@@ -99,7 +113,7 @@ function MapComponent({onLocationSelect, onPickupDetected, pickup, destination})
 
   return (
     <MapContainer
-      center={position} //|| [45.815, 15.9819]
+      center={position}
       zoom={13}
       style={{ height: "100%", width: "100%" }}
     >
@@ -113,11 +127,14 @@ function MapComponent({onLocationSelect, onPickupDetected, pickup, destination})
           <Popup>Your location</Popup>
         </Marker>
       )}
-      {/* <Marker position={position} icon={pickupIcon} >
-        <Popup>Your location</Popup>
-      </Marker> */}
+      {destination && (
+        <Marker position={[destination.lat, destination.lng]} icon={destinationIcon} >
+          <Popup>Destination</Popup>
+        </Marker>
+      )
+        }
       {pickup && destination && (
-        <Routing pickup={pickup} destination={destination} />
+        <Routing pickup={pickup} destination={destination} onDistanceCalculated={onDistanceCalculated} />
       )}
     </MapContainer>
   );
