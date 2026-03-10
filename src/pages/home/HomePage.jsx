@@ -14,6 +14,15 @@ function HomePage() {
     const [distance, setDistance] = useState(null);
     const navigate = useNavigate();
 
+    //Ride cost caluculations
+    const fuelPrice = 1.60; // €/L
+    const carConsumption = 7; // L per 100km
+    const distanceKm = distance ? distance / 1000 : 0;
+    const fuelUsed = (distanceKm / 100) * carConsumption;
+    const fuelCost = fuelUsed * fuelPrice;
+    const estimatedRideCost = fuelCost * 0.6;
+
+
     async function handleLogout() {
         const {error} = await supabase.auth.signOut();
 
@@ -116,7 +125,9 @@ function HomePage() {
                         </div>
                         <div className="est-ride-cost">
                             <p>Estimated ride cost</p>
-                            <h2>$50</h2>
+                            <h2>
+                                {distance ? `$${estimatedRideCost.toFixed(2)}` : "--"}
+                            </h2>
                         </div>
                         </div>
                         <hr />
